@@ -149,8 +149,8 @@ public class DataFile extends DataTypes {
 	 */
 	public void clear() {
 		try {
-		PrintWriter writer = new PrintWriter(this.path);
-		writer.close();
+			PrintWriter writer = new PrintWriter(this.path);
+			writer.close();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -160,7 +160,7 @@ public class DataFile extends DataTypes {
 	 * Deletes the file
 	 */
 	public void delete() {
-		file.delete();
+		this.file.delete();
 	}
 	
 	/**

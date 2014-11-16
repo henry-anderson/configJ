@@ -36,19 +36,28 @@ public class DataFile extends DataTypes {
 	 */
 	public void set(String key, Object value) {
 		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter(path, true));
+			BufferedWriter bw = new BufferedWriter(new FileWriter(this.path, true));
+			BufferedReader br = new BufferedReader(new FileReader(this.path));
+			ArrayList<String> file = new ArrayList<String>();
 			if(this.getValue(key) != null) {
-				BufferedReader br = new BufferedReader(new FileReader(this.path));
-				ArrayList<String> file = new ArrayList<String>();
 				for(String line; (line = br.readLine()) != null;) {
 					if(line.startsWith(this.COMMENT_PREFIX)) {
 						file.add(line);
 					}
-					else {
+					else {			
 						String lineKey = line.substring(0, line.indexOf(":"));
 						String lineValue = line.substring(line.indexOf(":") + 2);
 						if(lineKey.equals(key)) {
-							file.add(lineKey + ": " + value);
+							if(value instanceof ArrayList) {
+								StringBuilder newValue = new StringBuilder(value.toString());
+								newValue.replace(value.toString().lastIndexOf("]"), value.toString().lastIndexOf("]") + 1, "");
+								newValue.replace(value.toString().indexOf("["), value.toString().indexOf("[") + 1, "");
+								bw.append(key + ": " + newValue.toString());
+								bw.newLine();
+							}
+							else {
+								file.add(lineKey + ": " + value);
+							}
 						}
 						else {
 							file.add(lineKey + ": " + lineValue);
@@ -63,8 +72,18 @@ public class DataFile extends DataTypes {
 				br.close();
 			}
 			else {
-				bw.append(key + ": " + value);
-				bw.newLine();
+				if(value instanceof ArrayList) {
+					StringBuilder newValue = new StringBuilder(value.toString());
+					newValue.replace(value.toString().lastIndexOf("]"), value.toString().lastIndexOf("]") + 1, "");
+					newValue.replace(value.toString().indexOf("["), value.toString().indexOf("[") + 1, "");
+					bw.append(key + ": " + newValue.toString());
+					bw.newLine();
+				}
+				else {
+					bw.append(key + ": " + value);
+					bw.newLine();
+				}
+				
 			}
 			bw.close();
 		} catch(Exception e) {

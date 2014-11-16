@@ -2,6 +2,7 @@ package com.skionz.dataapi;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.ArrayList;
 
 public class DataTypes {
 	protected String COMMENT_PREFIX = "#";
@@ -78,6 +79,22 @@ public class DataTypes {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	/**
+	 * Gets an ArrayList<String> assigned to the key
+	 * @param key The key in which to get the value from
+	 * @return Returns an ArrayList value
+	 */
+	public ArrayList<String> getList(String key) {
+		ArrayList<String> list = new ArrayList<String>();
+		String string = this.getValue(key);
+		String[] array = string.split(", ");
+		for(int i = 0; i < array.length; i++) {
+			String line = array[i];
+			list.add(line);
+		}
+		return list;
 	}
 
 	/**

@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 
 public class DataTypes {
-	protected String COMMENT_PREFIX = "##";
+	protected String COMMENT_PREFIX = "#";
 	private String path;
 
 	public DataTypes(String path) {

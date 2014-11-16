@@ -5,11 +5,10 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public class Data {
+public class DataUtils {
 	
 	/**
 	 * Serializes an object
-	 * @author Skionz
 	 * @param object The object to serialize
 	 * @param path The path to the new file
 	 * @param extension The extension of the new file excluding the period
@@ -43,5 +42,35 @@ public class Data {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	/**
+	 * Creates an instance of the DataFile class
+	 * @param path The path to the new, or existing file
+	 * @param extension The extension of the file excluding the period
+	 */
+	public static DataFile createDataFile(String path, String extension) {
+		DataFile file = new DataFile(path, extension);
+		return file;
+	}
+	
+	/**
+	 * Creates an instance of the ListFile class
+	 * @param path The path to the new, or existing file
+	 * @param extension The extension of the file excluding the period
+	 */
+	public static ListFile createListFile(String path, String extension) {
+		ListFile file = new ListFile(path, extension);
+		return file;
+	}
+	
+	/**
+	 * Creates an instance of the MapFile class
+	 * @param path The path to the new, or existing file
+	 * @param extension The extension of the file excluding the period
+	 */
+	public static MapFile createMapFile(String path, String extension) {
+		MapFile file = new MapFile(path, extension);
+		return file;
 	}
 }

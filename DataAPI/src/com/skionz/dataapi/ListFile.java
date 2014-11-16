@@ -13,7 +13,7 @@ public class ListFile {
 	String path;	
 		
 	/**
-	 * @author Skionz
+	 * @author Skionz (and not Kanss)
 	 * @param path The path of the new, or existing file
 	 * @param extension The extension of the file excluding the period
 	 */

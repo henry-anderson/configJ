@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class ListFile {
@@ -52,7 +53,8 @@ public class ListFile {
 	 */
 	public void write(ArrayList<String> list) {
 		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter(path, true));
+			BufferedWriter bw = new BufferedWriter(new FileWriter(this.path, true));
+			this.clear();
 			for(String line : list) {
 				bw.append(line);
 				bw.newLine();
@@ -61,5 +63,34 @@ public class ListFile {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Adds a line to the end of the file
+	 * @param line The line to add
+	 */
+	public void addLine(String line) {
+		ArrayList<String> list = this.read();
+		list.add(line);
+		this.write(list);
+	}
+	
+	/**
+	 * Clears the file of all data
+	 */
+	public void clear() {
+		try {
+			PrintWriter pw = new PrintWriter(this.path);
+			pw.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Deletes the file
+	 */
+	public void delete() {
+		this.file.delete();
 	}
 }

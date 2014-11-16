@@ -15,7 +15,6 @@ public class DataFile {
 	
 	/**
 	 * A class for storing human readable data
-	 * @author Skionz
 	 * @param path The path to the new, or existing file
 	 * @param extension The extension of the file excluding the period
 	 */

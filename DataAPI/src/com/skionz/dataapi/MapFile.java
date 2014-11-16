@@ -19,7 +19,7 @@ public class MapFile {
 	}
 	/**
 	 * Writes a Map to the file in a key: value format
-	 * @param list The ArrayList to save
+	 * @param map The Map to save
 	 */
 	public void write(Map<String, ?> map) {
 		for(String key : map.keySet()) {
@@ -43,7 +43,8 @@ public class MapFile {
 
 	/**
 	 * Adds a line to the end of the file or updates an existing line
-	 * @param line The line to add
+	 * @param key The line to add
+	 * @param value The value assigned to the key
 	 */
 	public void put(String key, String value) {
 		Map<String, String> map = this.read();

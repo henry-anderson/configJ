@@ -7,14 +7,28 @@ public class DataTypes {
 	protected String COMMENT_PREFIX = "#";
 	private String path;
 
+	/**
+	 * @author Skionz
+	 * @param path The path of the file
+	 */
 	public DataTypes(String path) {
 		this.path = path;
 	}
-
+	
+	/**
+	 * Gets the value assigned to the key
+	 * @param key The key in which to get the value from
+	 * @return Returns a String value
+	 */
 	public String getString(String key) {
 		return this.getValue(key);
 	}
-
+	
+	/**
+	 * Gets the value assigned to the key
+	 * @param key The key in which to get the value from
+	 * @return Returns an Integer value
+	 */
 	public Integer getInt(String key) {
 		try {
 			return Integer.parseInt(this.getValue(key));
@@ -23,7 +37,12 @@ public class DataTypes {
 		}
 		return null;
 	}
-
+	
+	/**
+	 * Gets the value assigned to the key
+	 * @param key The key in which to get the value from
+	 * @return Returns a Double value
+	 */
 	public Double getDouble(String key) {
 		try {
 			return Double.parseDouble(this.getValue(key));
@@ -33,6 +52,11 @@ public class DataTypes {
 		return null;
 	}
 
+	/**
+	 * Gets the value assigned to the key
+	 * @param key The key in which to get the value from
+	 * @return Returns a Float value
+	 */
 	public Float getFloat(String key) {
 		try {
 			return Float.parseFloat(this.getValue(key));
@@ -42,6 +66,11 @@ public class DataTypes {
 		return null;
 	}
 
+	/**
+	 * Gets the value assigned to the key
+	 * @param key The key in which to get the value from
+	 * @return Returns a Long value
+	 */
 	public Long getLong(String key) {
 		try {
 			return Long.parseLong(this.getValue(key));
@@ -51,6 +80,11 @@ public class DataTypes {
 		return null;
 	}
 
+	/**
+	 * Gets the value assigned to the key
+	 * @param key The key in which to get the value from
+	 * @return Returns a Boolean value
+	 */
 	public Boolean getBoolean(String key) {
 		try {
 			return Boolean.parseBoolean(this.getValue(key));
@@ -59,7 +93,12 @@ public class DataTypes {
 		}
 		return null;
 	}
-
+	
+	/**
+	 * Gets the value assigned to the key
+	 * @param key The key in which to get the value from
+	 * @return Returns a Byte value
+	 */
 	public byte getByte(String key) {
 		try {
 			return Byte.parseByte(this.getValue(key));
@@ -69,6 +108,11 @@ public class DataTypes {
 		return -1;
 	}
 
+	/**
+	 * Gets the value assigned to the key
+	 * @param key The key in which to get the value from
+	 * @return Returns a Short value
+	 */
 	public short getShort(String key) {
 		try {
 			return Short.parseShort(this.getValue(key));
@@ -78,6 +122,11 @@ public class DataTypes {
 		return -1;
 	}
 
+	/**
+	 * Returns whether the value assigned to the key is an integer
+	 * @param key The key to get the value from
+	 * @return Returns a boolean
+	 */
 	public boolean isInt(String key) {
 		String value = this.getValue(key);
 		try {
@@ -87,7 +136,12 @@ public class DataTypes {
 		}
 		return true;
 	}
-
+	
+	/**
+	 * Returns whether the value assigned to the key is a double
+	 * @param key The key to get the value from
+	 * @return Returns a boolean
+	 */
 	public boolean isDouble(String key) {
 		String value = this.getValue(key);
 		try {
@@ -97,7 +151,12 @@ public class DataTypes {
 		}
 		return true;
 	}
-
+	
+	/**
+	 * Returns whether the value assigned to the key is a float
+	 * @param key The key to get the value from
+	 * @return Returns a boolean
+	 */
 	public boolean isFloat(String key) {
 		String value = this.getValue(key);
 		try {
@@ -108,6 +167,11 @@ public class DataTypes {
 		return true;
 	}
 
+	/**
+	 * Returns whether the value assigned to the key is a long
+	 * @param key The key to get the value from
+	 * @return Returns a boolean
+	 */
 	public boolean isLong(String key) {
 		String value = this.getValue(key);
 		try {
@@ -118,6 +182,11 @@ public class DataTypes {
 		return true;
 	}
 
+	/**
+	 * Returns whether the value assigned to the key is a boolean
+	 * @param key The key to get the value from
+	 * @return Returns a boolean
+	 */
 	public boolean isBoolean(String key) {
 		String value = this.getValue(key);
 		try {
@@ -128,6 +197,11 @@ public class DataTypes {
 		return true;
 	}
 
+	/**
+	 * Returns whether the value assigned to the key is a byte
+	 * @param key The key to get the value from
+	 * @return Returns a boolean
+	 */
 	public boolean isByte(String key) {
 		String value = this.getValue(key);
 		try {
@@ -138,6 +212,11 @@ public class DataTypes {
 		return true;
 	}
 
+	/**
+	 * Returns whether the value assigned to the key is a short
+	 * @param key The key to get the value from
+	 * @return Returns a boolean
+	 */
 	public boolean isShort(String key) {
 		String value = this.getValue(key);
 		try {

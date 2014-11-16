@@ -12,6 +12,11 @@ public class ListFile {
 	File file;
 	String path;	
 		
+	/**
+	 * @author Skionz
+	 * @param path The path of the new, or existing file
+	 * @param extension The extension of the file excluding the period
+	 */
 	public ListFile(String path, String extension) {
 		this.path = path + "." + extension;
 		this.file = new File(this.path);
@@ -21,6 +26,10 @@ public class ListFile {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * @return Returns an ArrayList with every line of the file inside.
+	 */
 	public ArrayList<String> read() {
 		ArrayList<String> list = new ArrayList<String>();
 		try {
@@ -36,6 +45,11 @@ public class ListFile {
 		}
 		return list;
 	}
+	
+	/**
+	 * Writes an ArrayList to the file line by line
+	 * @param list The ArrayList to save
+	 */
 	public void write(ArrayList<String> list) {
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(path, true));

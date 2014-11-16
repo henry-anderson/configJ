@@ -11,6 +11,13 @@ import java.util.ArrayList;
 public class DataFile extends DataTypes {
 	private String path;
 	private File file;
+	
+	/**
+	 * A class for storing human readable data
+	 * @author Skionz
+	 * @param path The path to the new, or existing file
+	 * @param extension The extension of the file excluding the period
+	 */
 	public DataFile(String path, String extension) {
 		super(path + "." + extension);
 		try {
@@ -21,6 +28,12 @@ public class DataFile extends DataTypes {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Assigns a value to a key
+	 * @param key The key
+	 * @param value The value assigned to the key
+	 */
 	public void set(String key, Object value) {
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(path, true));
@@ -58,6 +71,11 @@ public class DataFile extends DataTypes {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Removes the specified line from the file
+	 * @param key The key to remove
+	 */
 	public void remove(String key) {
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(path, true));
@@ -81,6 +99,11 @@ public class DataFile extends DataTypes {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Adds a comment to the file
+	 * @param comment The comment to add
+	 */
 	public void addComment(String comment) {
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(path, true));
@@ -102,6 +125,9 @@ public class DataFile extends DataTypes {
 		}
 	}
 	
+	/**
+	 * Clears all of the data saved in the file
+	 */
 	public void clear() {
 		try {
 		PrintWriter writer = new PrintWriter(this.path);
@@ -110,9 +136,18 @@ public class DataFile extends DataTypes {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Deletes the file
+	 */
 	public void delete() {
 		file.delete();
 	}
+	
+	/**
+	 * Gets a list of all keys saved in the file
+	 * @return Returns an ArrayList of keys
+	 */
 	public ArrayList<String> keyList() {
 		ArrayList<String> keys = new ArrayList<String>();
 		try {
@@ -127,6 +162,11 @@ public class DataFile extends DataTypes {
 		}
 		return keys;
 	}
+	
+	/**
+	 * Gets a list of all values saved in the file
+	 * @return Returns an ArrayList of values
+	 */
 	public ArrayList<String> valueList() {
 		ArrayList<String> values = new ArrayList<String>();
 		try {

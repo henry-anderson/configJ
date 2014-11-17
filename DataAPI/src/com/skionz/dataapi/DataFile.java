@@ -130,18 +130,8 @@ public class DataFile {
 	public void addComment(String comment) {
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(this.path, true));
-			BufferedReader br = new BufferedReader(new FileReader(this.path));
-			ArrayList<String> file = new ArrayList<String>();
-			for(String line; (line = br.readLine()) != null;) {
-				file.add(line);
-			}
-			file.add(this.COMMENT_PREFIX + comment);
-			this.clear();
-			for(String line : file) {
-				bw.append(line);
-				bw.newLine();
-			}
-			br.close();
+			bw.append(this.COMMENT_PREFIX + comment);
+			bw.newLine();
 			bw.close();
 		} catch(Exception e) {
 			e.printStackTrace();

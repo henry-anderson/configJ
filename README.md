@@ -99,6 +99,7 @@ Here is a list of all of the classes and their methods.
 
 <h4>DataFile</h4>
 - addComment(String)
+- addLine()
 - clear()
 - delete()
 - getBoolean()

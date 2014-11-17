@@ -43,23 +43,28 @@ public class DataFile {
 					if(line.startsWith(this.COMMENT_PREFIX)) {
 						file.add(line);
 					}
-					else {			
-						String lineKey = line.substring(0, line.indexOf(":"));
-						String lineValue = line.substring(line.indexOf(":") + 2);
-						if(lineKey.equals(key)) {
-							if(value instanceof ArrayList) {
-								StringBuilder newValue = new StringBuilder(value.toString());
-								newValue.replace(value.toString().lastIndexOf("]"), value.toString().lastIndexOf("]") + 1, "");
-								newValue.replace(value.toString().indexOf("["), value.toString().indexOf("[") + 1, "");
-								bw.append(key + ": " + newValue.toString());
-								bw.newLine();
-							}
-							else {
-								file.add(lineKey + ": " + value);
-							}
+					else {
+						if(line.isEmpty()) {
+							file.add("");
 						}
 						else {
-							file.add(lineKey + ": " + lineValue);
+							String lineKey = line.substring(0, line.indexOf(":"));
+							String lineValue = line.substring(line.indexOf(":") + 2);
+							if(lineKey.equals(key)) {
+								if(value instanceof ArrayList) {
+									StringBuilder newValue = new StringBuilder(value.toString());
+									newValue.replace(value.toString().lastIndexOf("]"), value.toString().lastIndexOf("]") + 1, "");
+									newValue.replace(value.toString().indexOf("["), value.toString().indexOf("[") + 1, "");
+									bw.append(key + ": " + newValue.toString());
+									bw.newLine();
+								}
+								else {
+									file.add(lineKey + ": " + value);
+								}
+							}
+							else {
+								file.add(lineKey + ": " + lineValue);
+							}
 						}
 					}
 				}
@@ -124,7 +129,7 @@ public class DataFile {
 	 */
 	public void addComment(String comment) {
 		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter(path, true));
+			BufferedWriter bw = new BufferedWriter(new FileWriter(this.path, true));
 			BufferedReader br = new BufferedReader(new FileReader(this.path));
 			ArrayList<String> file = new ArrayList<String>();
 			for(String line; (line = br.readLine()) != null;) {
@@ -137,6 +142,19 @@ public class DataFile {
 				bw.newLine();
 			}
 			br.close();
+			bw.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Adds a blank line to the end of the file
+	 */
+	public void addLine() {
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(this.path, true));
+			bw.newLine();
 			bw.close();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -433,7 +451,7 @@ public class DataFile {
 		try {
 			br = new BufferedReader(new FileReader(this.path));
 			for (String line; (line = br.readLine()) != null;) {
-				if(!line.startsWith(this.COMMENT_PREFIX)) {
+				if(!line.startsWith(this.COMMENT_PREFIX) && !line.isEmpty()) {
 					String lineKey = line.substring(0, line.indexOf(":"));
 					String lineValue = line.substring(line.indexOf(":") + 2);
 					if (lineKey.equals(key)) {

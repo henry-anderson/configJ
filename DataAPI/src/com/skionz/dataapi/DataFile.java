@@ -15,13 +15,22 @@ public class DataFile {
 	
 	/**
 	 * A class for storing human readable data
+	 * @param path The path to the new, or existing file excluding the extension
+	 */
+	public DataFile(String path) {
+		this(path, "skml");
+	}
+	
+	/**
+	 * A class for storing human readable data
 	 * @param path The path to the new, or existing file
 	 * @param extension The extension of the file excluding the period
 	 */
 	public DataFile(String path, String extension) {
+		this.path = path + "." + extension;
+		this.file = new File(this.path);
+
 		try {
-			this.path = path + "." + extension;
-			this.file = new File(this.path);
 			file.createNewFile();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -42,29 +51,33 @@ public class DataFile {
 				for(String line; (line = br.readLine()) != null;) {
 					if(line.startsWith(this.COMMENT_PREFIX)) {
 						file.add(line);
-					}
-					else {
-						if(line.isEmpty()) {
-							file.add("");
+					} else if(line.isEmpty()) {
+						file.add("");
+					} else {
+						try {
+							if(!line.contains(":")) {
+								throw new SkionzFormatException("Missing a colon!");
+							}
+						} catch(SkionzFormatException e) {
+							e.printStackTrace();
+							bw.close();
+							br.close();
+							return;
 						}
-						else {
-							String lineKey = line.substring(0, line.indexOf(":"));
-							String lineValue = line.substring(line.indexOf(":") + 2);
-							if(lineKey.equals(key)) {
-								if(value instanceof ArrayList) {
-									StringBuilder newValue = new StringBuilder(value.toString());
-									newValue.replace(value.toString().lastIndexOf("]"), value.toString().lastIndexOf("]") + 1, "");
-									newValue.replace(value.toString().indexOf("["), value.toString().indexOf("[") + 1, "");
-									bw.append(key + ": " + newValue.toString());
-									bw.newLine();
-								}
-								else {
-									file.add(lineKey + ": " + value);
-								}
+						String lineKey = line.substring(0, line.indexOf(":"));
+						String lineValue = line.substring(line.indexOf(":") + 2);
+						if(lineKey.equals(key)) {
+							if(value instanceof ArrayList) {
+								StringBuilder newValue = new StringBuilder(value.toString());
+								newValue.replace(value.toString().lastIndexOf("]"), value.toString().lastIndexOf("]") + 1, "");
+								newValue.replace(value.toString().indexOf("["), value.toString().indexOf("[") + 1, "");
+								bw.append(key + ": " + newValue.toString());
+								bw.newLine();
+							} else {
+								file.add(lineKey + ": " + value);
 							}
-							else {
-								file.add(lineKey + ": " + lineValue);
-							}
+						} else {
+							file.add(lineKey + ": " + lineValue);
 						}
 					}
 				}
@@ -73,22 +86,19 @@ public class DataFile {
 					bw.append(line);
 					bw.newLine();
 				}
-				br.close();
-			}
-			else {
-				if(value instanceof ArrayList) {
+			} else {
+			if(value instanceof ArrayList) {
 					StringBuilder newValue = new StringBuilder(value.toString());
 					newValue.replace(value.toString().lastIndexOf("]"), value.toString().lastIndexOf("]") + 1, "");
 					newValue.replace(value.toString().indexOf("["), value.toString().indexOf("[") + 1, "");
 					bw.append(key + ": " + newValue.toString());
 					bw.newLine();
-				}
-				else {
+				} else {
 					bw.append(key + ": " + value);
 					bw.newLine();
 				}
-				
 			}
+			br.close();
 			bw.close();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -436,12 +446,21 @@ public class DataFile {
 		return true;
 	} 
 
-	protected String getValue(String key) {
+	private String getValue(String key) {
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader(this.path));
 			for (String line; (line = br.readLine()) != null;) {
 				if(!line.startsWith(this.COMMENT_PREFIX) && !line.isEmpty()) {
+					try {
+						if(!line.contains(":")) {
+							throw new SkionzFormatException("Missing a colon!");
+						}
+					} catch(SkionzFormatException e) {
+						e.printStackTrace();
+						br.close();
+						return null;
+					}
 					String lineKey = line.substring(0, line.indexOf(":"));
 					String lineValue = line.substring(line.indexOf(":") + 2);
 					if (lineKey.equals(key)) {

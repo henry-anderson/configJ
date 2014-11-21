@@ -142,4 +142,5 @@ Here is a list of all of the classes and their methods.
 - createListFile(String, String)
 - createMapFile(String, String)
 - deserialize(String, String)
+- fileExists(String, String)
 - serialize(Object, String, String)

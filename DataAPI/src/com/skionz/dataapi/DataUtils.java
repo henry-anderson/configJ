@@ -1,5 +1,6 @@
 package com.skionz.dataapi;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -42,6 +43,16 @@ public class DataUtils {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	/**
+	 * Checks if the specified file exists
+	 * @param path The path of the file
+	 * @param extension The extension of the file excluding the period
+	 */
+	public static boolean fileExists(String path, String extension) {
+		File file = new File(path + "." + extension);
+		return file.exists();
 	}
 	
 	/**

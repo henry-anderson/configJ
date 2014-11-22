@@ -7,11 +7,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 public class DataFile {
 	private String path;
 	private File file;
 	private String COMMENT_PREFIX = "#";
+	private LinkedHashMap<String, String> map;
 	
 	/**
 	 * A class for storing human readable data
@@ -29,79 +31,55 @@ public class DataFile {
 	public DataFile(String path, String extension) {
 		this.path = path + "." + extension;
 		this.file = new File(this.path);
+		map = new LinkedHashMap<String, String>();
 
 		try {
 			file.createNewFile();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		for(String key : this.keyList()) {
+			this.map.put(key, this.getString(key));
+		}
 	}
 	
+	/**
+	 * Saves the current data to the file
+	 */
+	public void save() {
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(this.path, true));
+			this.clear();
+			for(String key : this.map.keySet()) {
+				String value = this.map.get(key);
+				String line;
+				if(key.startsWith(this.COMMENT_PREFIX)) {
+					line = key;
+				} else {
+					line = key + ": " + value; 
+				}
+				bw.append(line);
+				bw.newLine();
+			}
+			bw.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 	/**
 	 * Assigns a value to a key
 	 * @param key The key
 	 * @param value The value assigned to the key
 	 */
 	public void set(String key, Object value) {
-		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter(this.path, true));
-			BufferedReader br = new BufferedReader(new FileReader(this.path));
-			ArrayList<String> file = new ArrayList<String>();
-			if(this.getValue(key) != null) {
-				for(String line; (line = br.readLine()) != null;) {
-					if(line.startsWith(this.COMMENT_PREFIX)) {
-						file.add(line);
-					} else if(line.isEmpty()) {
-						file.add("");
-					} else {
-						try {
-							if(!line.contains(":")) {
-								throw new SkionzFormatException("Missing a colon!");
-							}
-						} catch(SkionzFormatException e) {
-							e.printStackTrace();
-							bw.close();
-							br.close();
-							return;
-						}
-						String lineKey = line.substring(0, line.indexOf(":"));
-						String lineValue = line.substring(line.indexOf(":") + 2);
-						if(lineKey.equals(key)) {
-							if(value instanceof ArrayList) {
-								StringBuilder newValue = new StringBuilder(value.toString());
-								newValue.replace(value.toString().lastIndexOf("]"), value.toString().lastIndexOf("]") + 1, "");
-								newValue.replace(value.toString().indexOf("["), value.toString().indexOf("[") + 1, "");
-								bw.append(key + ": " + newValue.toString());
-								bw.newLine();
-							} else {
-								file.add(lineKey + ": " + value);
-							}
-						} else {
-							file.add(lineKey + ": " + lineValue);
-						}
-					}
-				}
-				this.clear();
-				for(String line : file) {
-					bw.append(line);
-					bw.newLine();
-				}
-			} else {
-			if(value instanceof ArrayList) {
-					StringBuilder newValue = new StringBuilder(value.toString());
-					newValue.replace(value.toString().lastIndexOf("]"), value.toString().lastIndexOf("]") + 1, "");
-					newValue.replace(value.toString().indexOf("["), value.toString().indexOf("[") + 1, "");
-					bw.append(key + ": " + newValue.toString());
-					bw.newLine();
-				} else {
-					bw.append(key + ": " + value);
-					bw.newLine();
-				}
+		if(key.startsWith(this.COMMENT_PREFIX)) {
+			try {
+				throw new SKMLFormatException("Key cannot start with '" + this.COMMENT_PREFIX + "'");
+			} catch(SKMLFormatException e) {
+				e.printStackTrace();
 			}
-			br.close();
-			bw.close();
-		} catch(Exception e) {
-			e.printStackTrace();
+		} else {
+			this.map.put(key, value.toString());
 		}
 	}
 	
@@ -138,14 +116,7 @@ public class DataFile {
 	 * @param comment The comment to add
 	 */
 	public void addComment(String comment) {
-		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter(this.path, true));
-			bw.append(this.COMMENT_PREFIX + comment);
-			bw.newLine();
-			bw.close();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+		this.map.put(this.COMMENT_PREFIX + comment, "");
 	}
 	
 	/**
@@ -189,8 +160,10 @@ public class DataFile {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(this.path));
 			for(String line; (line = br.readLine()) != null;) {
-				String lineKey = line.substring(0, line.indexOf(":"));
-				keys.add(lineKey);
+				if(!line.startsWith(this.COMMENT_PREFIX)) {
+					String lineValue = line.substring(line.indexOf(":") + 2);
+					keys.add(lineValue);
+				}
 			}
 			br.close();
 		} catch(Exception e) {
@@ -208,8 +181,10 @@ public class DataFile {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(this.path));
 			for(String line; (line = br.readLine()) != null;) {
-				String lineValue = line.substring(line.indexOf(":") + 2);
-				values.add(lineValue);
+				if(!line.startsWith(this.COMMENT_PREFIX)) {
+					String lineValue = line.substring(line.indexOf(":") + 2);
+					values.add(lineValue);
+				}
 			}
 			br.close();
 		} catch(Exception e) {
@@ -454,9 +429,9 @@ public class DataFile {
 				if(!line.startsWith(this.COMMENT_PREFIX) && !line.isEmpty()) {
 					try {
 						if(!line.contains(":")) {
-							throw new SkionzFormatException("Missing a colon!");
+							throw new SKMLFormatException("Missing a colon!");
 						}
-					} catch(SkionzFormatException e) {
+					} catch(SKMLFormatException e) {
 						e.printStackTrace();
 						br.close();
 						return null;

@@ -2,6 +2,12 @@ DataAPI
 =======
 DataAPI is a Java API for easy to read data serialization. DataAPI was written by Skionz to allow easy configuration and a way to allow users to easily configure the properties of programs.
 
+<h3>Updates</h3>
+- Increased speed by 800%
+- Created a format exception
+- Added Comments
+- Added the MapFile class
+
 Usage
 =====
 DataAPI consists of two main classes, DataFile, and ListFile. DataFile stores data in a key: value format while ListFile stores String lists line by line.
@@ -15,6 +21,7 @@ file.set("key1", "value");
 file.set("key2", 53);
 file.addComment("This is a comment");
 file.set("key3", true);
+file.save();
 </pre>
 Will create or load an already existing file named data.txt and would look like this:
 <pre>
@@ -120,6 +127,7 @@ Here is a list of all of the classes and their methods.
 - isShort()
 - keyList()
 - remove()
+- save()
 - set(String, String)
 - valueList()
 

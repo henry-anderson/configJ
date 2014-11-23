@@ -1,4 +1,4 @@
-<img src="http://i.imgur.com/5fkAPgX.png" width="80%" height="80%"></img>
+<img src="http://i.imgur.com/VJyb7Di.png"></img>
 
 DataAPI is a Java API for easy to read data serialization. DataAPI was written by Skionz to allow easy configuration and a way to allow users to easily change the properties of programs.
 

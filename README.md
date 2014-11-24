@@ -5,7 +5,6 @@ DataAPI is a Java API for easy to read data serialization. DataAPI was written b
 <h3>Updates</h3>
 - Increased speed by 800%
 - Created a format exception
-- Added Comments
 - Added the MapFile class
 
 Usage
@@ -19,7 +18,6 @@ When declaring a new instance of the DataFile class the constructor creates a ne
 DataFile file = new DataFile("data", "txt");
 file.set("key1", "value");
 file.set("key2", 53);
-file.addComment("This is a comment");
 file.set("key3", true);
 file.save();
 </pre>
@@ -27,7 +25,6 @@ Will create or load an already existing file named data.txt and would look like 
 <pre>
 key1: value
 key2: 53
-#This is a comment
 key3: true
 </pre>
 
@@ -105,8 +102,6 @@ Classes and Methods
 Here is a list of all of the classes and their methods.
 
 <h4>DataFile</h4>
-- addComment(String)
-- addLine()
 - clear()
 - delete()
 - getBoolean()

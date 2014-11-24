@@ -12,9 +12,10 @@ import java.util.LinkedHashMap;
 public class DataFile {
 	private String path;
 	private File file;
+	//Comments will be implemented soon
 	private String COMMENT_PREFIX = "#";
-	private LinkedHashMap<String, String> map;
-	
+	private LinkedHashMap<String, String> fileMap;
+
 	/**
 	 * A class for storing human readable data
 	 * @param path The path to the new, or existing file excluding the extension
@@ -31,14 +32,13 @@ public class DataFile {
 	public DataFile(String path, String extension) {
 		this.path = path + "." + extension;
 		this.file = new File(this.path);
-		map = new LinkedHashMap<String, String>();
-
+		fileMap = new LinkedHashMap<String, String>();
 		try {
 			file.createNewFile();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		this.map = this.toMap();
+		this.fileMap = this.toMap();
 	}
 	
 	/**
@@ -48,14 +48,9 @@ public class DataFile {
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(this.path, true));
 			this.clear();
-			for(String key : this.map.keySet()) {
-				String value = this.map.get(key);
-				String line;
-				if(key.startsWith(this.COMMENT_PREFIX)) {
-					line = key;
-				} else {
-					line = key + ": " + value; 
-				}
+			for (String key : this.fileMap.keySet()) {
+				String value = this.fileMap.get(key);
+				String line = key + ": " + value; 
 				bw.append(line);
 				bw.newLine();
 			}
@@ -64,6 +59,7 @@ public class DataFile {
 			e.printStackTrace();
 		}
 	}
+	
 	/**
 	 * Assigns a value to a key
 	 * @param key The key
@@ -77,44 +73,16 @@ public class DataFile {
 				e.printStackTrace();
 			}
 		} else {
-			this.map.put(key, value.toString());
+			this.fileMap.put(key, value.toString());
 		}
 	}
-	
+
 	/**
 	 * Removes the specified line from the file
 	 * @param key The key to remove
 	 */
 	public void remove(String key) {
-		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter(path, true));
-			BufferedReader br = new BufferedReader(new FileReader(this.path));
-			ArrayList<String> file = new ArrayList<String>();
-			for(String line; (line = br.readLine()) != null;) {
-				String lineKey = line.substring(0, line.indexOf(":"));
-				String lineValue = line.substring(line.indexOf(":") + 2);
-				if(!lineKey.equals(key)) {
-					file.add(lineKey + ": " + lineValue);
-				}
-			}
-			this.clear();
-			for(String line : file) {
-				bw.append(line);
-				bw.newLine();
-			}
-			br.close();
-			bw.close();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Adds a comment to the file
-	 * @param comment The comment to add
-	 */
-	public void addComment(String comment) {
-		this.map.put(this.COMMENT_PREFIX + comment, "");
+		this.fileMap.remove(key);
 	}
 	
 	/**
@@ -146,7 +114,7 @@ public class DataFile {
 			BufferedReader br = new BufferedReader(new FileReader(this.path));
 			for(String line; (line = br.readLine()) != null;) {
 				if(!line.startsWith(this.COMMENT_PREFIX) && !line.isEmpty()) {
-					String lineKey = line.substring(0, line.indexOf(":"));
+					String lineKey = this.parseKey(line);
 					keys.add(lineKey);
 				}
 			}
@@ -167,7 +135,7 @@ public class DataFile {
 			BufferedReader br = new BufferedReader(new FileReader(this.path));
 			for(String line; (line = br.readLine()) != null;) {
 				if(!line.startsWith(this.COMMENT_PREFIX) && !line.isEmpty()) {
-					String lineValue = line.substring(line.indexOf(":") + 2);
+					String lineValue = this.parseValue(line);
 					values.add(lineValue);
 				}
 			}
@@ -407,21 +375,16 @@ public class DataFile {
 	} 
 
 	private String getValue(String key) {
-		return this.map.get(key);
-	}
-	public LinkedHashMap<String, String> getMap() {
-		return this.map;
+		return this.fileMap.get(key);
 	}
 	private LinkedHashMap<String, String> toMap() {
 		LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(this.path));
 			for(String line; (line = br.readLine()) != null;) {
-				if(line.startsWith(this.COMMENT_PREFIX)) {
-					map.put(line, "");
-				} else {
-					String lineKey = line.substring(0, line.indexOf(":"));
-					String lineValue = line.substring(line.indexOf(":") + 2);
+				if(!line.isEmpty() && !line.startsWith("#")) {
+					String lineKey = this.parseKey(line);
+					String lineValue = this.parseValue(line);
 					map.put(lineKey, lineValue);
 				}
 			}
@@ -430,5 +393,13 @@ public class DataFile {
 			e.printStackTrace();
 		}
 		return map;
+	}
+	private String parseKey(String line) {
+		String lineKey = line.substring(0, line.indexOf(":"));
+		return lineKey;
+	}
+	private String parseValue(String line) {
+		String lineValue = line.substring(line.indexOf(":") + 2);
+		return lineValue;
 	}
 }

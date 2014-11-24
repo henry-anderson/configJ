@@ -38,9 +38,7 @@ public class DataFile {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		for(String key : this.keyList()) {
-			this.map.put(key, this.getString(key));
-		}
+		this.map = this.toMap();
 	}
 	
 	/**
@@ -120,19 +118,6 @@ public class DataFile {
 	}
 	
 	/**
-	 * Adds a blank line to the end of the file
-	 */
-	public void addLine() {
-		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter(this.path, true));
-			bw.newLine();
-			bw.close();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
 	 * Clears all of the data saved in the file
 	 */
 	public void clear() {
@@ -160,9 +145,9 @@ public class DataFile {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(this.path));
 			for(String line; (line = br.readLine()) != null;) {
-				if(!line.startsWith(this.COMMENT_PREFIX)) {
-					String lineValue = line.substring(line.indexOf(":") + 2);
-					keys.add(lineValue);
+				if(!line.startsWith(this.COMMENT_PREFIX) && !line.isEmpty()) {
+					String lineKey = line.substring(0, line.indexOf(":"));
+					keys.add(lineKey);
 				}
 			}
 			br.close();
@@ -181,7 +166,7 @@ public class DataFile {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(this.path));
 			for(String line; (line = br.readLine()) != null;) {
-				if(!line.startsWith(this.COMMENT_PREFIX)) {
+				if(!line.startsWith(this.COMMENT_PREFIX) && !line.isEmpty()) {
 					String lineValue = line.substring(line.indexOf(":") + 2);
 					values.add(lineValue);
 				}
@@ -422,36 +407,28 @@ public class DataFile {
 	} 
 
 	private String getValue(String key) {
-		BufferedReader br = null;
+		return this.map.get(key);
+	}
+	public LinkedHashMap<String, String> getMap() {
+		return this.map;
+	}
+	private LinkedHashMap<String, String> toMap() {
+		LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
 		try {
-			br = new BufferedReader(new FileReader(this.path));
-			for (String line; (line = br.readLine()) != null;) {
-				if(!line.startsWith(this.COMMENT_PREFIX) && !line.isEmpty()) {
-					try {
-						if(!line.contains(":")) {
-							throw new SKMLFormatException("Missing a colon!");
-						}
-					} catch(SKMLFormatException e) {
-						e.printStackTrace();
-						br.close();
-						return null;
-					}
+			BufferedReader br = new BufferedReader(new FileReader(this.path));
+			for(String line; (line = br.readLine()) != null;) {
+				if(line.startsWith(this.COMMENT_PREFIX)) {
+					map.put(line, "");
+				} else {
 					String lineKey = line.substring(0, line.indexOf(":"));
 					String lineValue = line.substring(line.indexOf(":") + 2);
-					if (lineKey.equals(key)) {
-						return lineValue;
-					}
+					map.put(lineKey, lineValue);
 				}
 			}
-		} catch (Exception e) {
+			br.close();
+		} catch(Exception e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				br.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 		}
-		return null;
+		return map;
 	}
 }

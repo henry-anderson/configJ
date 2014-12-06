@@ -27,7 +27,7 @@ public class DataUtils {
 	}
 	
 	/**
-	 * Deserializes an object from a file
+	 * Deserialize an object from a file
 	 * @param path The path to the file
 	 * @param extension The extension of the file excluding the period
 	 */
@@ -54,6 +54,16 @@ public class DataUtils {
 		File file = new File(path + "." + extension);
 		return file.exists();
 	}
+
+	/**
+	 * Deletes the specified file
+	 * @param path The path of the file
+	 * @param extension The extension of the file excluding the period
+	 */
+	public static boolean deleteFile(String path, String extension) {
+		File file = new File(path + "." + extension);
+		return file.delete();
+	}
 	
 	/**
 	 * Creates an instance of the DataFile class
@@ -61,8 +71,7 @@ public class DataUtils {
 	 * @param extension The extension of the file excluding the period
 	 */
 	public static DataFile createDataFile(String path, String extension) {
-		DataFile file = new DataFile(path, extension);
-		return file;
+		return new DataFile(path, extension);
 	}
 	
 	/**
@@ -71,8 +80,7 @@ public class DataUtils {
 	 * @param extension The extension of the file excluding the period
 	 */
 	public static ListFile createListFile(String path, String extension) {
-		ListFile file = new ListFile(path, extension);
-		return file;
+		return new ListFile(path, extension);
 	}
 	
 	/**
@@ -81,7 +89,6 @@ public class DataUtils {
 	 * @param extension The extension of the file excluding the period
 	 */
 	public static MapFile createMapFile(String path, String extension) {
-		MapFile file = new MapFile(path, extension);
-		return file;
+		return new MapFile(path, extension);
 	}
 }

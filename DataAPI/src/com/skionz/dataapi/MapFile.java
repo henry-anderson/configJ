@@ -24,8 +24,9 @@ public class MapFile {
 	public void write(Map<String, ?> map) {
 		for(String key : map.keySet()) {
 			Object value = map.get(key);
-			file.set(key, value);
+			this.file.set(key, value);
 		}
+		this.file.save();
 	}
 	
 	/**

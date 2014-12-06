@@ -12,10 +12,8 @@ import java.util.LinkedHashMap;
 public class DataFile {
 	private String path;
 	private File file;
-	//Comments will be implemented soon
 	private String COMMENT_PREFIX = "#";
 	private LinkedHashMap<String, String> fileMap;
-
 	/**
 	 * A class for storing human readable data
 	 * @param path The path to the new, or existing file excluding the extension
@@ -144,6 +142,15 @@ public class DataFile {
 			e.printStackTrace();
 		}
 		return values;
+	}
+
+	/**
+	 * Checks if the file contains the key
+	 * @param key The key too check
+	 * @return Returns a boolean
+	 */
+	public boolean contains(String key) {
+		return this.getValue(key) != null;
 	}
 	
 	/**
@@ -377,6 +384,7 @@ public class DataFile {
 	private String getValue(String key) {
 		return this.fileMap.get(key);
 	}
+
 	private LinkedHashMap<String, String> toMap() {
 		LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
 		try {
@@ -385,7 +393,8 @@ public class DataFile {
 				if(!line.isEmpty() && !line.startsWith("#")) {
 					String lineKey = this.parseKey(line);
 					String lineValue = this.parseValue(line);
-					map.put(lineKey, lineValue);
+					if(lineKey != null)
+						map.put(lineKey, lineValue);
 				}
 			}
 			br.close();
@@ -394,12 +403,30 @@ public class DataFile {
 		}
 		return map;
 	}
+
 	private String parseKey(String line) {
-		String lineKey = line.substring(0, line.indexOf(":"));
-		return lineKey;
+		try {
+			return line.substring(0, line.indexOf(":"));
+		} catch(StringIndexOutOfBoundsException e) {
+			try {
+				throw new SKMLFormatException("Parsing issue! Missing ':'");
+			} catch(SKMLFormatException e2) {
+				e2.printStackTrace();
+			}
+		}
+		return null;
 	}
+
 	private String parseValue(String line) {
-		String lineValue = line.substring(line.indexOf(":") + 2);
-		return lineValue;
+		try {
+			return line.substring(line.indexOf(":") + 2);
+		} catch(StringIndexOutOfBoundsException e) {
+			try {
+				throw new SKMLFormatException("Parsing issue! Missing ':'");
+			} catch(SKMLFormatException e2) {
+				e2.printStackTrace();
+			}
+		}
+		return null;
 	}
 }

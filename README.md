@@ -1,11 +1,8 @@
-<img src="http://i.imgur.com/n1D4KHV.png"></img>
+# DataAPI
 
 DataAPI is a Java API for easy to read data serialization. DataAPI was written by Skionz to allow easy configuration and a way to allow users to easily change the properties of programs.
 
-<h3>Updates</h3>
-- Increased speed by 800%
-- Created a format exception
-- Added the MapFile class
+[View the Javadocs here](http://henry-anderson.github.io/DataAPI/)
 
 Usage
 =====
@@ -54,11 +51,11 @@ This is line number one
 This is line number two
 </pre>
 
-You can also turn a file into an ArrayList<String> by using the read method as shown here:
+You can also turn a file into a List<String> by using the read method as shown here:
 
 <pre>
 ListFile file = new ListFile("list", "txt");
-ArrayList<String> list = file.read();
+List<String> list = file.read();
 for(String line : list) {
     System.out.println(line);
 }

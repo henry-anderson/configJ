@@ -1,4 +1,4 @@
-package anderson.henry.dataapi;
+package org.henrya.dataapi;
 
 public class DataFormatException extends Exception {
 	private static final long serialVersionUID = 1L;

@@ -1,6 +1,6 @@
 # DataAPI
 
-DataAPI is a Java API for easy to read data serialization. DataAPI was written by Skionz to allow easy configuration and a way to allow users to easily change the properties of programs.
+DataAPI is a Java API for easy to read data serialization. DataAPI was written to allow easy configuration and a way to allow users to easily change the properties of a program.
 
 [View the Javadocs here](http://henry-anderson.github.io/DataAPI/)
 
@@ -93,54 +93,3 @@ Data.serialize("This is a string object", "object", "ser");
 System.out.println(Data.deserialize("object", "ser"));
 //will print "This is a string object" in the console
 </pre>
-
-Classes and Methods
-====================
-Here is a list of all of the classes and their methods.
-
-<h4>DataFile</h4>
-- clear()
-- delete()
-- getBoolean()
-- getByte()
-- getDouble()
-- getFloat()
-- getInt()
-- getList()
-- getLong()
-- getShort()
-- getString()
-- isBoolean()
-- isByte()
-- isDouble()
-- isFloat()
-- isInt()
-- isLong()
-- isShort()
-- keyList()
-- remove()
-- save()
-- set(String, String)
-- valueList()
-
-<h4>ListFile</h4>
-- addLine(String)
-- clear()
-- delete()
-- write()
-- read(ArrayList&lt;String&gt;)
-
-<h4>MapFile</h4>
-- clear()
-- delete()
-- put(String, String)
-- write()
-- read(Map&lt;String, String&gt;)
- 
-<h4>DataUtils</h4>
-- createDataFile(String, String)
-- createListFile(String, String)
-- createMapFile(String, String)
-- deserialize(String, String)
-- fileExists(String, String)
-- serialize(Object, String, String)

@@ -2,7 +2,7 @@
 
 configJ is a Java library for easy to read data serialization. It was written to help in the creation of configuration files.
 
-[View the Javadocs here](http://henry-anderson.github.io/DataAPI/)
+[View the Javadocs here](http://henry-anderson.github.io/configJ/)
 
 Usage
 =====

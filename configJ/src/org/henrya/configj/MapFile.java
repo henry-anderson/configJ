@@ -1,4 +1,4 @@
-package org.henrya.dataapi;
+package org.henrya.configj;
 
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class MapFile {
 	private String path;
-	private DataFile file;
+	private ConfigFile file;
 	
 	/**
 	 * A wrapper class for quick Map saving
@@ -15,8 +15,9 @@ public class MapFile {
 	 */
 	public MapFile(String path, String extension) {
 		this.path = path + "." + extension;
-		this.file = new DataFile(path, extension);
+		this.file = new ConfigFile(path, extension);
 	}
+	
 	/**
 	 * Writes a Map to the file in a key: value format
 	 * @param map The Map to save
@@ -34,7 +35,7 @@ public class MapFile {
 	 */
 	public Map<String, String> read() {
 		Map<String, String> map = new HashMap<String, String>();
-		for(String key : file.keyList()) {
+		for(String key : file.keySet()) {
 			String value = file.getString(key);
 			map.put(key, value);
 		}

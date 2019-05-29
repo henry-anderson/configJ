@@ -1,27 +1,30 @@
-package org.henrya.dataapi;
+package org.henrya.configj;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
-public class DataFile {
+public class ConfigFile {
 	private String path;
 	private File file;
 	//Comments will be implemented soon
-	private String COMMENT_PREFIX = "#";
+	private static final String COMMENT_PREFIX = "#";
 	private LinkedHashMap<String, String> fileMap;
 
 	/**
 	 * A class for storing human readable data
 	 * @param path The path to the new, or existing file excluding the extension
 	 */
-	public DataFile(String path) {
+	public ConfigFile(String path) {
 		this(path, "txt");
 	}
 	
@@ -30,7 +33,7 @@ public class DataFile {
 	 * @param path The path to the new, or existing file
 	 * @param extension The extension of the file excluding the period
 	 */
-	public DataFile(String path, String extension) {
+	public ConfigFile(String path, String extension) {
 		this.path = path + "." + extension;
 		this.file = new File(this.path);
 		fileMap = new LinkedHashMap<String, String>();
@@ -68,10 +71,10 @@ public class DataFile {
 	 * @param value The value assigned to the key
 	 */
 	public void set(String key, Object value) {
-		if(key.startsWith(this.COMMENT_PREFIX)) {
+		if(key.startsWith(COMMENT_PREFIX)) {
 			try {
-				throw new DataFormatException("Key cannot start with '" + this.COMMENT_PREFIX + "'");
-			} catch(DataFormatException e) {
+				throw new ConfigFormatException("Key cannot start with '" + COMMENT_PREFIX + "'");
+			} catch(ConfigFormatException e) {
 				e.printStackTrace();
 			}
 		} else {
@@ -110,48 +113,27 @@ public class DataFile {
 	 * Gets a list of all keys saved in the file
 	 * @return Returns a List of keys
 	 */
-	public List<String> keyList() {
-		ArrayList<String> keys = new ArrayList<String>();
+	public Set<String> keySet() {
+		Set<String> keys = new HashSet<String>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(this.path));
 			for(String line; (line = br.readLine()) != null;) {
-				if(!line.startsWith(this.COMMENT_PREFIX) && !line.isEmpty()) {
+				if(!line.startsWith(COMMENT_PREFIX) && !line.isEmpty()) {
 					String lineKey = this.parseKey(line);
 					keys.add(lineKey);
 				}
 			}
 			br.close();
-		} catch(Exception e) {
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 		return keys;
 	}
 	
 	/**
-	 * Gets a list of all values saved in the file
-	 * @return Returns an List of values
-	 */
-	public List<String> valueList() {
-		ArrayList<String> values = new ArrayList<String>();
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(this.path));
-			for(String line; (line = br.readLine()) != null;) {
-				if(!line.startsWith(this.COMMENT_PREFIX) && !line.isEmpty()) {
-					String lineValue = this.parseValue(line);
-					values.add(lineValue);
-				}
-			}
-			br.close();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		return values;
-	}
-	
-	/**
 	 * Gets the value assigned to the key
 	 * @param key The key in which to get the value from
-	 * @return Returns a String value
+	 * @return Returns a String
 	 */
 	public String getString(String key) {
 		return this.getValue(key);
@@ -160,57 +142,37 @@ public class DataFile {
 	/**
 	 * Gets the value assigned to the key
 	 * @param key The key in which to get the value from
-	 * @return Returns an Integer value
+	 * @return Returns an int
 	 */
-	public Integer getInt(String key) {
-		try {
-			return Integer.parseInt(this.getValue(key));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+	public int getInt(String key) {
+		return Integer.parseInt(this.getValue(key));
 	}
 	
 	/**
 	 * Gets the value assigned to the key
 	 * @param key The key in which to get the value from
-	 * @return Returns a Double value
+	 * @return Returns a double
 	 */
-	public Double getDouble(String key) {
-		try {
-			return Double.parseDouble(this.getValue(key));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+	public double getDouble(String key) {
+		return Double.parseDouble(this.getValue(key));
 	}
 
 	/**
 	 * Gets the value assigned to the key
 	 * @param key The key in which to get the value from
-	 * @return Returns a Float value
+	 * @return Returns a float
 	 */
-	public Float getFloat(String key) {
-		try {
-			return Float.parseFloat(this.getValue(key));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+	public float getFloat(String key) {
+		return Float.parseFloat(this.getValue(key));
 	}
 
 	/**
 	 * Gets the value assigned to the key
 	 * @param key The key in which to get the value from
-	 * @return Returns a Long value
+	 * @return Returns a long
 	 */
-	public Long getLong(String key) {
-		try {
-			return Long.parseLong(this.getValue(key));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+	public long getLong(String key) {
+		return Long.parseLong(this.getValue(key));
 	}
 	
 	/**
@@ -232,43 +194,28 @@ public class DataFile {
 	/**
 	 * Gets the value assigned to the key
 	 * @param key The key in which to get the value from
-	 * @return Returns a Boolean value
+	 * @return Returns a boolean
 	 */
-	public Boolean getBoolean(String key) {
-		try {
-			return Boolean.parseBoolean(this.getValue(key));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+	public boolean getBoolean(String key) {
+		return Boolean.parseBoolean(this.getValue(key));
 	}
 	
 	/**
 	 * Gets the value assigned to the key
 	 * @param key The key in which to get the value from
-	 * @return Returns a Byte value
+	 * @return Returns a byte
 	 */
-	public Byte getByte(String key) {
-		try {
-			return Byte.parseByte(this.getValue(key));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+	public byte getByte(String key) {
+		return Byte.parseByte(this.getValue(key));
 	}
 
 	/**
 	 * Gets the value assigned to the key
 	 * @param key The key in which to get the value from
-	 * @return Returns a Short value
+	 * @return Returns a short
 	 */
 	public short getShort(String key) {
-		try {
-			return Short.parseShort(this.getValue(key));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return -1;
+		return Short.parseShort(this.getValue(key));
 	}
 
 	/**
@@ -376,32 +323,52 @@ public class DataFile {
 		return true;
 	} 
 
+	/**
+	 * Returns the value of a key as a String
+	 * @param key The key
+	 * @return The value as a String
+	 */
 	private String getValue(String key) {
 		return this.fileMap.get(key);
 	}
+	
+	/**
+	 * Returns the instance as a Map
+	 * @return A LinkedHashMap
+	 */
 	private LinkedHashMap<String, String> toMap() {
 		LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(this.path));
 			for(String line; (line = br.readLine()) != null;) {
-				if(!line.isEmpty() && !line.startsWith("#")) {
+				if(!line.isEmpty() && !line.startsWith(COMMENT_PREFIX)) {
 					String lineKey = this.parseKey(line);
 					String lineValue = this.parseValue(line);
 					map.put(lineKey, lineValue);
 				}
 			}
 			br.close();
-		} catch(Exception e) {
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 		return map;
 	}
+	
+	/**
+	 * Parses the key of the line
+	 * @param line The line to parse
+	 * @return The key
+	 */
 	private String parseKey(String line) {
-		String lineKey = line.substring(0, line.indexOf(":"));
-		return lineKey;
+		return line.substring(0, line.indexOf(":"));
 	}
+	
+	/**
+	 * Parses the value of the line
+	 * @param line The line to parse
+	 * @return The value
+	 */
 	private String parseValue(String line) {
-		String lineValue = line.substring(line.indexOf(":") + 2);
-		return lineValue;
+		return line.substring(line.indexOf(":") + 2);
 	}
 }

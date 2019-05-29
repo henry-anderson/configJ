@@ -1,4 +1,4 @@
-package org.henrya.dataapi;
+package org.henrya.configj;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -63,8 +63,8 @@ public class DataUtils {
 	 * @param extension The extension of the file excluding the period
 	 * @return Returns a DataFile instance
 	 */
-	public static DataFile createDataFile(String path, String extension) {
-		DataFile file = new DataFile(path, extension);
+	public static ConfigFile createDataFile(String path, String extension) {
+		ConfigFile file = new ConfigFile(path, extension);
 		return file;
 	}
 	

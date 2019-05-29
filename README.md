@@ -10,6 +10,7 @@ configJ consists of two main classes, ConfigFile, and ListFile. ConfigFile store
 
 <h3>ConfigFile</h3>
 When declaring a new instance of the ConfigFile class the constructor creates a new file if the file does not already exists. Here is some example usage:
+
 ```java
 ConfigFile file = new ConfigFile("data", "txt");
 file.set("key1", "value");
@@ -17,7 +18,9 @@ file.set("key2", 53);
 file.set("key3", true);
 file.save();
 ```
+
 Will create or load an already existing file named data.txt and would look like this:
+
 ```
 key1: value
 key2: 53
@@ -45,6 +48,7 @@ file.write(list);
 ```
 
 The output of this would look like:
+
 ```
 This is line number one
 This is line number two
@@ -61,6 +65,7 @@ for(String line : list) {
 ```
 
 Would print the following in the console:
+
 ```
 This is line number one
 This is line number two
@@ -68,6 +73,7 @@ This is line number two
 
 <h3>MapFile</h3>
 The MapFile class is a simple wrapper class that allows for quick and ledgible Map serilization. The MapFile class is simple and like the ListFile class it only consists of 5 methods. Here is some example usage:
+
 ```java
 MapFile file = new MapFile("Map", "txt");
 HashMap<String, Object> map = new HashMap<String, Object>();
@@ -78,6 +84,7 @@ file.write(map);
 ```
 
 A file would be created named Map.txt and would look similar to the following.
+
 ```
 Key 1: This is a string value
 Key 2: 71

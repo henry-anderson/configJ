@@ -1,6 +1,6 @@
-# DataAPI
+# configJ
 
-DataAPI is a Java API for easy to read data serialization. DataAPI was written to allow easy configuration and a way to allow users to easily change the properties of a program.
+configJ is a Java library for easy to read data serialization. It was written to help in the creation of configuration files.
 
 [View the Javadocs here](http://henry-anderson.github.io/DataAPI/)
 
